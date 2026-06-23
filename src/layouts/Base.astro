@@ -1,1 +1,86 @@
+---
+import { SITE } from '../consts';
+const { title, description, type = 'website', extraSchema = [] } = Astro.props;
+const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.jobTitle}`;
+const pageDesc = description || SITE.description;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
 
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: SITE.url,
+  jobTitle: SITE.jobTitle,
+  description: SITE.description,
+  sameAs: SITE.sameAs,
+  alumniOf: SITE.alumniOf.map((n) => ({ '@type': 'CollegeOrUniversity', name: n })),
+  knowsAbout: SITE.knowsAbout,
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Executive Presence',
+    url: 'https://executivepresence.io',
+    description:
+      'A done-for-you executive thought-leadership and LinkedIn content agency for CEOs and senior leaders. (Not an executive-presence / communication coaching practice.)',
+  },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    {extraSchema.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
+  </head>
+  <body>
+    <header class="wrap">
+      <a href="/" class="brand">{SITE.name}</a>
+      <nav>
+        <a href="/about">About</a>
+        <a href="/writing">Writing</a>
+        <a href="/podcast">Podcast</a>
+      </nav>
+    </header>
+    <main class="wrap"><slot /></main>
+    <footer class="wrap">
+      <p>&copy; {new Date().getFullYear()} {SITE.name}. Founder &amp; CEO of <a href="https://executivepresence.io">Executive Presence</a>, Denver, CO.</p>
+    </footer>
+    <style is:global>
+      :root { --ink:#1a2230; --muted:#5b6577; --accent:#1f4e78; --line:#e6e9ef; }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body { margin:0; font:17px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:var(--ink); }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+      header.wrap { display:flex; justify-content:space-between; align-items:center; padding-top:28px; padding-bottom:28px; }
+      .brand { font-weight:700; font-size:18px; color:var(--ink); text-decoration:none; }
+      nav a { margin-left:20px; color:var(--muted); text-decoration:none; font-size:15px; }
+      nav a:hover { color:var(--accent); }
+      main.wrap { padding-bottom:64px; }
+      h1 { font-size:34px; line-height:1.15; letter-spacing:-0.01em; margin:24px 0 8px; }
+      h2 { font-size:23px; margin:36px 0 10px; }
+      h3 { font-size:18px; margin:24px 0 6px; }
+      a { color:var(--accent); }
+      p, li { color:var(--ink); }
+      .lede { font-size:20px; color:var(--muted); margin-top:0; }
+      .card { display:block; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:14px 0; text-decoration:none; color:inherit; }
+      .card:hover { border-color:var(--accent); }
+      .card h3 { margin:0 0 4px; color:var(--ink); }
+      .card p { margin:0; color:var(--muted); font-size:15px; }
+      .meta { color:var(--muted); font-size:14px; }
+      footer.wrap { border-top:1px solid var(--line); padding-top:24px; padding-bottom:48px; color:var(--muted); font-size:14px; }
+      .faq dt { font-weight:700; margin-top:18px; }
+      .faq dd { margin:6px 0 0; color:var(--ink); }
+      hr { border:0; border-top:1px solid var(--line); margin:32px 0; }
+    </style>
+  </body>
+</html>
