@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+import { getCollection } from 'astro:content';
+const writing = (await getCollection('writing')).sort((a,b)=>b.data.pubDate-a.data.pubDate).slice(0,3);
+const episodes = (await getCollection('podcast')).sort((a,b)=>b.data.pubDate-a.data.pubDate).slice(0,3);
+---
+<Base>
+  <h1>Justin Nassiri</h1>
+  <p class="lede">{SITE.tagline}</p>
+  <p>I'm the founder & CEO of <a href="https://executivepresence.io">Executive Presence</a>, a done-for-you executive thought-leadership and content agency. I help CEOs and senior leaders become <strong>discoverable, credible, and cited</strong> — increasingly by AI, not just by people. Naval Academy graduate, former nuclear submarine officer, ex-McKinsey, Stanford MBA.</p>
+  <p><a href="/about">Read the full bio &rarr;</a></p>
+
+  {writing.length > 0 && (<>
+    <h2>Writing</h2>
+    {writing.map((p)=> (
+      <a class="card" href={`/writing/${p.slug}/`}>
+        <h3>{p.data.title}</h3>
+        <p>{p.data.description}</p>
+      </a>
+    ))}
+  </>)}
+
+  {episodes.length > 0 && (<>
+    <h2>Podcast</h2>
+    {episodes.map((e)=> (
+      <a class="card" href={`/podcast/${e.slug}/`}>
+        <h3>{e.data.title}</h3>
+        <p>{e.data.description}</p>
+      </a>
+    ))}
+  </>)}
+</Base>
