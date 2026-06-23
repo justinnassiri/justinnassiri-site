@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../consts';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const eps = await getCollection('podcast');
+  return eps.map((e)=> ({ params:{ slug: e.slug }, props:{ ep: e } }));
+}
+const { ep } = Astro.props;
+const { Content } = await ep.render();
+const schema = {
+  '@context':'https://schema.org','@type':'PodcastEpisode',
+  name: ep.data.title, description: ep.data.description,
+  datePublished: ep.data.pubDate.toISOString(),
+  ...(ep.data.episodeNumber ? { episodeNumber: ep.data.episodeNumber } : {}),
+  ...(ep.data.audioUrl ? { associatedMedia:{ '@type':'MediaObject', contentUrl: ep.data.audioUrl } } : {}),
+  partOfSeries: { '@type':'PodcastSeries', name:'Executive Thought Leadership + AI Discoverability', author:{ '@type':'Person', name: SITE.name } },
+};
+---
+<Base title={ep.data.title} description={ep.data.description} type="article" extraSchema={[schema]}>
+  <article>
+    <h1>{ep.data.title}</h1>
+    <p class="meta">{ep.data.guest ? `Guest: ${ep.data.guest} · ` : ''}{ep.data.pubDate.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</p>
+    <Content />
+  </article>
+</Base>
