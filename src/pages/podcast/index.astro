@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const eps = (await getCollection('podcast')).sort((a,b)=>b.data.pubDate-a.data.pubDate);
+---
+<Base title="Podcast" description="A research-season podcast by Justin Nassiri on executive thought leadership and AI discoverability — interviews with the experts on how leaders get found and cited by AI.">
+  <h1>Podcast</h1>
+  <p class="lede">Interviews with the best minds on how executives get found, cited, and trusted in the AI era. Full transcripts on every episode.</p>
+  {eps.map((e)=> (
+    <a class="card" href={`/podcast/${e.slug}/`}>
+      <h3>{e.data.title}</h3>
+      <p>{e.data.description}</p>
+    </a>
+  ))}
+</Base>
