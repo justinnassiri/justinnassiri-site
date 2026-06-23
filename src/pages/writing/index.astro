@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('writing')).sort((a,b)=>b.data.pubDate-a.data.pubDate);
+---
+<Base title="Writing" description="Essays on executive thought leadership and AI discoverability (GEO) by Justin Nassiri.">
+  <h1>Writing</h1>
+  <p class="lede">Long-form, answer-first essays on how leaders get found and cited in the AI era.</p>
+  {posts.map((p)=> (
+    <a class="card" href={`/writing/${p.slug}/`}>
+      <h3>{p.data.title}</h3>
+      <p>{p.data.description}</p>
+    </a>
+  ))}
+</Base>
