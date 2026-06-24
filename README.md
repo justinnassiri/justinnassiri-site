@@ -3,7 +3,7 @@
 A fast, static, schema-rich personal site engineered to be read and cited by LLMs.
 
 ## What's included
-- **Person + Organization schema** on every page (src/layouts/Base.astro) — corrects the audit's collision/recency issues (Captivate.ai vs .fm, StoryBox/Storyvine, "content agency NOT presence coaching", Innovation Endeavors not "Google's chairman").
+- **Person + Organization schema** on every page (src/layouts/Base.astro) — corrects the audit's collision/recency issues (Captivate.ai vs .fm, VideoGenie/StoryBox, "content agency NOT presence coaching", Innovation Endeavors not "Google's chairman").
 - **Canonical /about page** with FAQ schema — the entity-grounding anchor.
 - **/writing** — an answer-first article hub (markdown in src/content/writing). One starter post mapped to a target query.
 - **/podcast** — episode hub with full transcripts + PodcastEpisode schema (markdown in src/content/podcast).
