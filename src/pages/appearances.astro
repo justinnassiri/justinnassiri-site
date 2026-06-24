@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+
+// Podcast guest spots and media coverage. Each links out to the original — these are
+// third-party citations that reinforce the entity. Add new ones here as they happen.
+const appearances = [
+  { outlet: 'Think Like An Owner', kind: 'Podcast', title: "The CEO's Guide to Social Platforms (Ep. 171)", url: 'https://tlaopodcast.com/podcasts/justin-nassiri-ceo-guide-to-social-platforms-ep-171/', note: 'How operators and executives should actually use social platforms to build an audience that compounds.' },
+  { outlet: 'Sales POP!', kind: 'Podcast', title: 'Building Your Personal Brand on LinkedIn (Ep. 1023)', url: 'https://salespop.net/marketing/building-your-personal-brand-on-linkedin-insights-from-a-ceo/', note: "A CEO's playbook for turning expertise into an owned LinkedIn presence." },
+  { outlet: 'The Conscious Entrepreneur', kind: 'Podcast', title: 'Personal Branding for Conscious Leaders (Ep. 73)', url: 'https://consciousentrepreneur.us/justin-nassiri-personal-branding-for-conscious-leaders/', note: 'Building an authentic personal brand as a values-driven founder.' },
+  { outlet: 'Measure Success', kind: 'Podcast', title: 'How Executives Can Maximize Their LinkedIn Presence', url: 'https://40strategy.com/how-executives-can-maximize-their-linkedin-presence-authentically-and-cut-through-the-noise-with-justin-nassiri/', note: 'Cutting through the noise to build executive visibility authentically.' },
+  { outlet: 'Multiply Your Success', kind: 'Podcast', title: 'Why Every Executive Needs to Be Active on LinkedIn (Ep. 164)', url: 'https://www.multiplyyoursuccesspodcast.com/1001167/13308086-164-why-every-executive-needs-to-be-active-on-linkedin-justin-nassiri-ceo-executive-presence', note: 'The case for executive presence and consistent leadership content.' },
+  { outlet: 'Management Blueprint', kind: 'Podcast', title: 'Master the LinkedIn Post Framework (Ep. 167)', url: 'https://www.youtube.com/watch?v=nj8CfclOOos', note: 'A repeatable framework for structuring high-performing leadership posts.' },
+  { outlet: 'The Hard Way', kind: 'Podcast', title: 'Using Social Media to Scale Your Business (Ep. 69)', url: 'https://www.choosethehardway.com/episodes/justin-nassiri', note: 'How founders use social media as a growth channel, not a vanity metric.' },
+  { outlet: 'Beyond Consulting', kind: 'Podcast', title: 'From Consulting to PR and Communications Entrepreneur (Ep. 53)', url: 'https://spoti.fi/3ZKbnyd', note: 'The path from McKinsey to founding a thought-leadership agency.' },
+  { outlet: 'The Jeremy B. Hill Show', kind: 'Podcast', title: 'Success in Storytelling (Ep. 17)', url: 'https://thejeremybhill.com/success-in-storytelling/', note: 'Why storytelling is the core skill behind executive influence.' },
+  { outlet: 'Veteran on the Move', kind: 'Podcast', title: 'Executive Presence with Justin Nassiri (Ep. 297)', url: 'https://veteranonthemove.com/executive-presence-with-justin-nassiri/', note: 'From the Naval Academy and submarines to building Executive Presence.' },
+  { outlet: 'Built In', kind: 'Article', title: '5 Ways CEOs Can Stand Out on Social Media', url: 'https://builtin.com/founders-and-entrepreneurship/CEO-social-media-tips', note: 'Practical tactics for executives who want to be seen and trusted online.' },
+  { outlet: 'Colorado Business Journal', kind: 'Article', title: 'How to Use LinkedIn As a CEO', url: 'https://www.cobizmag.com/how-to-use-linkedin-as-a-ceo/', note: 'A CEO-level approach to LinkedIn for Colorado business leaders.' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Media appearances and press featuring Justin Nassiri',
+  itemListElement: appearances.map((a, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': a.kind === 'Podcast' ? 'PodcastEpisode' : 'Article',
+      name: a.title,
+      url: a.url,
+      publisher: { '@type': 'Organization', name: a.outlet },
+      about: { '@type': 'Person', name: SITE.name, url: SITE.url },
+    },
+  })),
+};
+---
+<Base title="Appearances" description="Podcast interviews, media coverage, and press featuring Justin Nassiri on executive thought leadership, CEO LinkedIn strategy, and AI discoverability." extraSchema={[schema]}>
+  <h1>Appearances &amp; Press</h1>
+  <p class="lede">A running record of podcasts, interviews, and articles featuring my work on executive thought leadership, CEO visibility, and AI discoverability.</p>
+  {appearances.map((a) => (
+    <a class="card" href={a.url} target="_blank" rel="noopener">
+      <p class="meta">{a.kind} · {a.outlet}</p>
+      <h3>{a.title}</h3>
+      <p>{a.note}</p>
+    </a>
+  ))}
+</Base>

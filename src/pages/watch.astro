@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+
+const channelUrl = 'https://www.youtube.com/@executive_presence';
+
+// Short video pieces. Each has a text summary (so the idea is indexable even where the
+// video is not) and links to the original. Replace/expand as flagship videos are published.
+const videos = [
+  { title: "Build a reputation, not a 'personal brand'", url: 'https://www.linkedin.com/feed/update/urn:li:activity:7049380173141454848', note: "'Personal brand' is just a newer word for reputation. A brand projects an image; a reputation backs it up with repeated, consistent action. Say what you'll do, then do it — visibly." },
+  { title: "The most effective communicator I've ever seen", url: 'https://www.linkedin.com/feed/update/urn:li:activity:7430642409606144000', note: "A CEO running an 850-person company isn't effective because he says something brilliant. He's effective because he says the same thing everywhere — town halls, newsletters, posts. Repetition is the strategy." },
+  { title: 'Give something away with every post', url: 'https://www.linkedin.com/feed/update/urn:li:activity:7452399691679338496', note: 'One client gives away something useful in every single post. Value-first content is how a leader earns the audience that shows up later when it matters.' },
+  { title: 'How a 20-year-old connection made me $50,000 in 10 days', url: 'https://www.linkedin.com/feed/update/urn:li:activity:7058802251372331008', note: "A friend I hadn't spoken to in two decades saw my content, understood what I was building, and made one introduction. He never liked or commented — visible work compounds in ways you can't see." },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: SITE.url,
+  sameAs: [channelUrl],
+};
+---
+<Base title="Watch" description="Video talks and short clips from Justin Nassiri on executive thought leadership, CEO visibility, and building a reputation in the AI era." extraSchema={[schema]}>
+  <h1>Watch</h1>
+  <p class="lede">Short videos and talks on executive visibility, reputation, and how leaders get found in the AI era.</p>
+  <p><a href={channelUrl} target="_blank" rel="noopener"><strong>Subscribe on YouTube → @executive_presence</strong></a></p>
+  <hr />
+  {videos.map((v) => (
+    <a class="card" href={v.url} target="_blank" rel="noopener">
+      <h3>{v.title}</h3>
+      <p>{v.note}</p>
+    </a>
+  ))}
+</Base>
