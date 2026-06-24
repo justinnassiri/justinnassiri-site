@@ -41,6 +41,16 @@ const personSchema = {
     {extraSchema.map((s) => (
       <script type="application/ld+json" set:html={JSON.stringify(s)} />
     ))}
+    <!-- Vercel Web Analytics -->
+    <script is:inline defer src="/_vercel/insights/script.js"></script>
+    <!-- Google Analytics (GA4) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-8CZKTFBKFF"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8CZKTFBKFF');
+    </script>
   </head>
   <body>
     <header class="wrap">
